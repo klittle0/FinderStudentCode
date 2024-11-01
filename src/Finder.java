@@ -1,12 +1,14 @@
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
+
 /**
  * Finder
  * A puzzle written by Zach Blick
  * for Adventures in Algorithms
  * At Menlo School in Atherton, CA
  *
- * Completed by: [YOUR NAME HERE]
+ * Completed by: Kate Little
  **/
 
 public class Finder {
@@ -17,8 +19,10 @@ public class Finder {
     public Finder() {}
     static final int RADIX = 256;
     // Cataldi's prime
-    static final long PRIME = 137438691328;
-    // Need an array
+    static final long PRIME = 137438691328L;
+    // Need an array of arraylists. Each arraylist holds a tuple
+    ArrayList<Tuple<Long, String>>[] = (ArrayList<Tuple<Long, String>>[]) new ArrayList[PRIME];
+
 
     public void buildTable(BufferedReader br, int keyCol, int valCol) throws IOException {
         // TODO: Complete the buildTable() function!
@@ -47,3 +51,4 @@ public class Finder {
         return INVALID;
     }
 }
+
