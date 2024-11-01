@@ -14,29 +14,40 @@ import java.util.ArrayList;
 public class Finder {
 
     private static final String INVALID = "INVALID KEY";
-
-
-    public Finder() {}
     static final int RADIX = 256;
     // Cataldi's prime
     static final int PRIME = 1001219;
     // Need an array of arraylists. Each arraylist holds a tuple
     ArrayList<Tuple>[] bigArray = (ArrayList<Tuple>[]) new ArrayList[PRIME];
 
+    public Finder() {
+        // Initialize all arraylists in bigArray
+        for (int i = 0; i < PRIME; i++) {
+            bigArray[i] = new ArrayList<Tuple>();
+        }
+    }
 
     public void buildTable(BufferedReader br, int keyCol, int valCol) throws IOException {
-        while (br.readLine() != null){
+        String line;
+        while ((line = br.readLine()) != null){
             // Get an array of all data in line
-            String[] line = br.readLine().split(",");
+            String[] data = line.split(",");
             // Make hash for key
-            int hash = makeHash(line[keyCol]);
+            int hash = makeHash(data[keyCol]);
             // Insert into arraylist in list
-            bigArray[hash].add(new Tuple(hash, line[valCol]));
+            bigArray[hash].add(new Tuple(data[keyCol], data[valCol]));
         }
     }
 
     public String query(String key){
-        // TODO: Complete the query() function!
+        // Make hash for key
+        int hash = makeHash(key);
+        // Identify Tuple in arraylist with that key & return value
+        for (Tuple index : bigArray[hash]){
+            if (index.getKey().equals(key)){
+                return index.getValue();
+            }
+        }
         return INVALID;
     }
 
@@ -44,7 +55,7 @@ public class Finder {
     public int makeHash(String key){
         int hash = 0;
         for (int i = 0; i < key.length(); i++){
-            hash = hash * RADIX + key.charAt(i) % PRIME;
+            hash = (hash * RADIX + key.charAt(i)) % PRIME;
         }
         return hash;
     }
