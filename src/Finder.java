@@ -29,33 +29,13 @@ public class Finder {
         while ((line = br.readLine()) != null){
             // Get an array of all data in line
             String[] data = line.split(",");
-            // Make hash for key
-            int hash = makeHash(data[keyCol]);
             // Insert into arraylist in list
             map.add(data[keyCol], data[valCol]);
         }
     }
 
     public String query(String key){
-        // Make hash for key
-        int hash = makeHash(key);
-
-        // Identify Tuple in arraylist with that key & return value
-        for (Tuple index : bigArray[hash]){
-            if (index.getKey().equals(key)){
-                return index.getValue();
-            }
-        }
-        return INVALID;
-    }
-
-    // Turns key into a hash
-    public int makeHash(String key){
-        int hash = 0;
-        for (int i = 0; i < key.length(); i++){
-            hash = (hash * RADIX + key.charAt(i)) % PRIME;
-        }
-        return hash;
+        return map.get(key);
     }
 }
 

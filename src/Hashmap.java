@@ -1,6 +1,7 @@
 public class Hashmap {
     // What should this be to start?
-    static final int DEFAULT_TABLE_SIZE = 5;
+    // Do I want these to be static??
+    static final int DEFAULT_TABLE_SIZE = 10000;
     static int  tableSize;
     static int slotsFilled;
     static Tuple[] map;
@@ -17,7 +18,7 @@ public class Hashmap {
     // Add a key-value pair to the hash
     public void add(String key, String value){
         // Check to see if a resize is necessary
-        if (slotsFilled / tableSize > 0.5){
+        if (slotsFilled / (double) tableSize > 0.5){
             resize();
         }
 
@@ -48,10 +49,10 @@ public class Hashmap {
         // While the keys don't match — check up to every slot of the table
         for (int i = 0; i < tableSize; i++){
             // If the keys match
-            if (map[keyHash].getKey().equals(key)){
+            if (map[keyHash] != null && map[keyHash].getKey().equals(key)){
                 return map[keyHash].getValue();
             }
-            keyHash = keyHash + 1 % tableSize;
+            keyHash = (keyHash + 1) % tableSize;
         }
         return INVALID;
     }
@@ -63,7 +64,7 @@ public class Hashmap {
         Tuple[] oldMap = map;
         map = new Tuple[tableSize];
         // Is there a better way to do this than going through the ENTIRE existing hash?
-        for (int i = 0; i < (tableSize / 2); i++){
+        for (int i = 0; i < (oldMap.length); i++){
             // If slot not empty
             if (oldMap[i] != null){
                 // Add key-value pair to the new hashmap
@@ -71,5 +72,4 @@ public class Hashmap {
             }
         }
     }
-
 }
