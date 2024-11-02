@@ -18,13 +18,10 @@ public class Finder {
     // Cataldi's prime
     static final int PRIME = 1001219;
     // Need an array of arraylists. Each arraylist holds a tuple
-    ArrayList<Tuple>[] bigArray = (ArrayList<Tuple>[]) new ArrayList[PRIME];
+    Hashmap map;
 
     public Finder() {
-        // Initialize all arraylists in bigArray
-        for (int i = 0; i < PRIME; i++) {
-            bigArray[i] = new ArrayList<Tuple>();
-        }
+        map = new Hashmap();
     }
 
     public void buildTable(BufferedReader br, int keyCol, int valCol) throws IOException {
@@ -35,13 +32,14 @@ public class Finder {
             // Make hash for key
             int hash = makeHash(data[keyCol]);
             // Insert into arraylist in list
-            bigArray[hash].add(new Tuple(data[keyCol], data[valCol]));
+            map.add(data[keyCol], data[valCol]);
         }
     }
 
     public String query(String key){
         // Make hash for key
         int hash = makeHash(key);
+
         // Identify Tuple in arraylist with that key & return value
         for (Tuple index : bigArray[hash]){
             if (index.getKey().equals(key)){
