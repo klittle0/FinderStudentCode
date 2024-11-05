@@ -1,13 +1,13 @@
 public class Hashmap {
-    // What should this be to start?
-    // Do I want these to be static??
-    static final int DEFAULT_TABLE_SIZE = 10000;
-    static int  tableSize;
-    static int slotsFilled;
-    static Tuple[] map;
-    static final int RADIX = 256;
+    // Found this number experimentally, trying to optimize for all tests
+    // A prime number to reduce # of collisions
+    public static final int DEFAULT_TABLE_SIZE = 4973;
+    private int  tableSize;
+    private int slotsFilled;
+    private Tuple[] map;
+    public static final int RADIX = 256;
     // Cataldi's prime
-    private static final String INVALID = "INVALID KEY";
+    public static final String INVALID = "INVALID KEY";
 
     public Hashmap(){
         slotsFilled = 0;
@@ -18,12 +18,11 @@ public class Hashmap {
     // Add a key-value pair to the hash
     public void add(String key, String value){
         // Check to see if a resize is necessary
-        if (slotsFilled / (double) tableSize > 0.5){
+        if (slotsFilled / (double) tableSize >= 0.5){
             resize();
         }
-
         int keyHash = makeHash(key);
-        // Until we reach an open slot
+        // Add a Tuple object into the first open slot in the table found after the hash index
         while (map[keyHash] != null){
             // Shift index
             keyHash = (keyHash + 1) % tableSize;
@@ -32,7 +31,7 @@ public class Hashmap {
         slotsFilled++;
     }
 
-    // Turns key into a hash
+    // Turns key into a hash using rolling hash function
     public int makeHash(String key){
         int hash = 0;
         for (int i = 0; i < key.length(); i++){
@@ -43,13 +42,11 @@ public class Hashmap {
 
     // Gets a value from the hash based on the key
     public String get(String key){
-        // Identify Tuple in arraylist with that key & return value
-        // Make hash for key
         int keyHash = makeHash(key);
-        // While the keys don't match — check up to every slot of the table
-        for (int i = 0; i < tableSize; i++){
+        // Shift forward until we reach a null, which marks the end of the cluster of potential matches
+        while (map[keyHash] != null){
             // If the keys match
-            if (map[keyHash] != null && map[keyHash].getKey().equals(key)){
+            if (map[keyHash].getKey().equals(key)){
                 return map[keyHash].getValue();
             }
             keyHash = (keyHash + 1) % tableSize;
@@ -63,11 +60,9 @@ public class Hashmap {
         // Switching pointers
         Tuple[] oldMap = map;
         map = new Tuple[tableSize];
-        // Is there a better way to do this than going through the ENTIRE existing hash?
         for (int i = 0; i < (oldMap.length); i++){
-            // If slot not empty
+            // If slot isn't empty, add its key-value pair into the new hashmap
             if (oldMap[i] != null){
-                // Add key-value pair to the new hashmap
                 add(oldMap[i].getKey(), oldMap[i].getValue());
             }
         }

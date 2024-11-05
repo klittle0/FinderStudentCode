@@ -1,6 +1,5 @@
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Finder
@@ -12,30 +11,25 @@ import java.util.ArrayList;
  **/
 
 public class Finder {
-
-    private static final String INVALID = "INVALID KEY";
-    static final int RADIX = 256;
-    // Cataldi's prime
-    static final int PRIME = 1001219;
-    // Need an array of arraylists. Each arraylist holds a tuple
-    Hashmap map;
+    private final Hashmap map;
 
     public Finder() {
         map = new Hashmap();
     }
 
+    // Plugs all data into the hashmap via buffered reader
     public void buildTable(BufferedReader br, int keyCol, int valCol) throws IOException {
         String line;
         while ((line = br.readLine()) != null){
             // Get an array of all data in line
             String[] data = line.split(",");
-            // Insert into arraylist in list
             map.add(data[keyCol], data[valCol]);
         }
+        br.close();
     }
 
+    // Search for a key in the map
     public String query(String key){
         return map.get(key);
     }
 }
-
