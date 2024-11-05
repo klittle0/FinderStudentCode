@@ -6,7 +6,6 @@ public class Hashmap {
     private int slotsFilled;
     private Tuple[] map;
     public static final int RADIX = 256;
-    // Cataldi's prime
     public static final String INVALID = "INVALID KEY";
 
     public Hashmap(){
