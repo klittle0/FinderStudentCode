@@ -7,8 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class FinderTester {
 
     private final Finder studentSolution = new Finder();
-    private int keyCol;
-    private int valCol;
     private BufferedReader csvReader, queryReader, resultReader;
 
     @Test
@@ -64,5 +62,4 @@ public class FinderTester {
             e.printStackTrace();
         }
     }
-
 }
