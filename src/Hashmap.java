@@ -6,6 +6,7 @@ public class Hashmap {
     private int slotsFilled;
     private Tuple[] map;
     public static final int RADIX = 256;
+    public static final double ALPHA = 0.5;
     public static final String INVALID = "INVALID KEY";
 
     public Hashmap(){
@@ -17,7 +18,7 @@ public class Hashmap {
     // Add a key-value pair to the hash
     public void add(String key, String value){
         // Check to see if a resize is necessary
-        if (slotsFilled / (double) tableSize >= 0.5){
+        if (slotsFilled / (double) tableSize >= ALPHA){
             resize();
         }
         int keyHash = makeHash(key);
